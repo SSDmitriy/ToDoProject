@@ -15,6 +15,7 @@ namespace PetProject.Controllers
             return Ok($"This all notes: \r\n {id1} \r\n {id2}");
         }
 
+        // ../api/Notes/getnote/{id}
         [HttpGet("getNote/{id:guid}")]
         public async Task<IActionResult> GetNoteById()
         {

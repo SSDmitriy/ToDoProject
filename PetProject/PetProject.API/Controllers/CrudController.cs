@@ -16,7 +16,6 @@ namespace PetProject.Controllers
             _notesService = notesService;
         }
 
-
         // ../api/Notes/getall
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllNotes()
@@ -26,13 +25,12 @@ namespace PetProject.Controllers
             return Ok(allNotes);
         }
 
-
         // ../api/Notes/getnote/{id}
         [HttpGet("getNote/{id:guid}")]
-        public async Task<IActionResult> GetNoteById()
+        public async Task<IActionResult> GetNoteById([FromRoute] Guid id)
         {
-            var id = Guid.NewGuid();
-            return Ok($"This is your note {id}");
+            var note = await _notesService.GetNoteById(id);
+            return Ok(note);
         }
 
         [HttpPost("createNote")]

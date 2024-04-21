@@ -34,17 +34,19 @@ namespace PetProject.Persistence
             await _notesDbContext.SaveChangesAsync();
         }
 
+        //get all notes
         public async Task<List<Note>> GetAllNotes()
         {
             var notes = await _notesDbContext.Notes.ToListAsync();
             return notes;
         }
 
-
-        //get all notes
-
-
         //get by id
+        public async Task<Note> GetNoteById(Guid id)
+        {
+            var note = await _notesDbContext.Notes.FirstOrDefaultAsync(n => n.Id == id);
+            return note;
+        }
 
 
         //update by id

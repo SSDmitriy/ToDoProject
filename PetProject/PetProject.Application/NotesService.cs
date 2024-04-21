@@ -26,5 +26,10 @@ namespace PetProject.Application
         {
             return await _notesRepository.GetAllNotes();
         }
+
+        public async Task<Note> GetNoteById(Guid id)
+        {
+            return await _notesRepository.GetNoteById(id);
+        }
     }
 }

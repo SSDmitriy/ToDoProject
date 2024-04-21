@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetProject.API;
+using PetProject.Application;
+using PetProject.Domain;
 
 namespace PetProject.Controllers
 {
@@ -6,14 +9,23 @@ namespace PetProject.Controllers
     [Route("api/[controller]")]
     public class NotesController : ControllerBase
     {
+        //
+        private readonly NotesService _notesService;
+        public NotesController(NotesService notesService)
+        {
+            _notesService = notesService;
+        }
+
+
         // ../api/Notes/getall
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllNotes()
         {
-            var id1 = Guid.NewGuid();
-            var id2 = Guid.NewGuid();
-            return Ok($"This all notes: \r\n {id1} \r\n {id2}");
+            var allNotes = await _notesService.GetAllNotes();
+
+            return Ok(allNotes);
         }
+
 
         // ../api/Notes/getnote/{id}
         [HttpGet("getNote/{id:guid}")]
@@ -24,10 +36,14 @@ namespace PetProject.Controllers
         }
 
         [HttpPost("createNote")]
-        public async Task<IActionResult> CreateNote()
+        public async Task<IActionResult> CreateNote([FromBody] CreateNotePostModel request)
         {
             var id = Guid.NewGuid();
-            return Ok($"Your note is created with id = {id}");
+
+            var note = new Note(id, request.Title, request.Description, Status.ToDo);
+            await _notesService.AddNote(note);
+
+            return Ok($"Your new note has CREATED with {id} + {request.Title} +  {request.Description} + {note.Status}");
         }
 
         [HttpPut("updateNote/{id:guid}")]

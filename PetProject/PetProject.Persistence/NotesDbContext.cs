@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetProject.Domain;
 
-
-
 namespace PetProject.Persistence
 {
     public class NotesDbContext : DbContext

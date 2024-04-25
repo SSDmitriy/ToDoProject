@@ -1,10 +1,5 @@
 ﻿using PetProject.Domain;
 using PetProject.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PetProject.Application
 {
@@ -37,5 +32,9 @@ namespace PetProject.Application
             return await _notesRepository.UpdateNoteById(updatedNote);
         }
 
+        public async Task<bool> DeleteNoteById(Guid id)
+        {
+            return await _notesRepository.DeleteNoteById(id);
+        }
     }
 }

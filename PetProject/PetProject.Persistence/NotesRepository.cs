@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetProject.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PetProject.Persistence
 {
@@ -26,7 +20,7 @@ namespace PetProject.Persistence
 
             string newDescription = null;
             if (note.Description != null) newDescription = note.Description;
-            
+
             var newEntity = new Note(note.Id, newTitle, newDescription, Status.ToDo);
 
             await _notesDbContext.Notes.AddAsync(newEntity);
@@ -71,5 +65,20 @@ namespace PetProject.Persistence
         }
 
         //delete by id
+        public async Task<bool> DeleteNoteById(Guid id)
+        {
+            var entityToDelete = await _notesDbContext.Notes.FindAsync(id);
+
+            if (entityToDelete != null)
+            {
+                _notesDbContext.Notes.Remove(entityToDelete);
+                await _notesDbContext.SaveChangesAsync();
+                return true; 
+            }
+            else
+            {
+                return false; //delete failed
+            }
+        }
     }
 }

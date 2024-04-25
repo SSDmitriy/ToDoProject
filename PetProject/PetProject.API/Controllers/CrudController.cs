@@ -45,6 +45,7 @@ namespace PetProject.Controllers
             return Ok(result);
         }
 
+        // ../api/Notes/{id} + body
         [HttpPut("updateNote/{id:guid}")]
         public async Task<IActionResult> UpdateNote(Guid id, [FromBody] UpdateNotePutModel request)
         {
@@ -61,15 +62,24 @@ namespace PetProject.Controllers
                 return new ContentResult
                 {
                     StatusCode = 404,
-                    Content = $"Note with id = {id} is not found"
+                    Content = $"Note with id = {id} is not found."
                 };
             }
         }
 
+        // ../api/Notes/{id}
         [HttpDelete("deleteNote/{id:guid}")]
-        public async Task<IActionResult> DeleteNote()
+        public async Task<IActionResult> DeleteNote([FromRoute] Guid id)
         {
-            return Ok("Your note is deleted");
+            var success = await _notesService.DeleteNoteById(id);
+            if (success)
+            {
+                return Ok($"Your note {id} is deleted.");
+            }
+            else
+            {
+                return NotFound($"Note with {id} is not found.");
+            }
         }
     }
 }

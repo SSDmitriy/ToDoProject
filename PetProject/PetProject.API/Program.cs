@@ -21,6 +21,7 @@ Console.WriteLine("NotesService added");
 builder.Services.AddScoped<NotesRepository>();
 Console.WriteLine("NotesRepository added");
 
+// warning! Port=5444
 builder.Services.AddDbContext<NotesDbContext>(options =>
 {
     options.UseNpgsql("Server=127.0.0.1;Port=5444;Database=todolistDb;User Id=postgres;Password=postgres;");
@@ -42,8 +43,6 @@ app.MapGet("/about", () =>
     {
         DateTime dateTime = DateTime.Now;
         return $"This is simply ToDo project {dateTime}";
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+    });
 
 app.Run();

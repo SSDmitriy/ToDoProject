@@ -17,12 +17,12 @@ namespace PetProject.Application
             _notesRepository = notesRepository;
         }
 
-        public async Task AddNote(Note note)
+        public async Task<Note> AddNote(Note note)
         {
-            await _notesRepository.AddNote(note);
+            return await _notesRepository.AddNote(note);
         }
 
-        public  async Task<List<Note>> GetAllNotes()
+        public async Task<List<Note>> GetAllNotes()
         {
             return await _notesRepository.GetAllNotes();
         }
@@ -31,5 +31,11 @@ namespace PetProject.Application
         {
             return await _notesRepository.GetNoteById(id);
         }
+
+        public async Task<Note> UpdateNoteById(Note updatedNote)
+        {
+            return await _notesRepository.UpdateNoteById(updatedNote);
+        }
+
     }
 }

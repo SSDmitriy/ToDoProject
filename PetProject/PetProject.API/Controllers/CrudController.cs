@@ -33,21 +33,37 @@ namespace PetProject.Controllers
             return Ok(note);
         }
 
+        // ../api/Notes/createNote + body {tittle + description}
         [HttpPost("createNote")]
         public async Task<IActionResult> CreateNote([FromBody] CreateNotePostModel request)
         {
             var id = Guid.NewGuid();
 
             var note = new Note(id, request.Title, request.Description, Status.ToDo);
-            await _notesService.AddNote(note);
+            var result = await _notesService.AddNote(note);
 
-            return Ok($"Your new note has CREATED with {id} + {request.Title} +  {request.Description} + {note.Status}");
+            return Ok(result);
         }
 
         [HttpPut("updateNote/{id:guid}")]
-        public async Task<IActionResult> UpdateNote()
+        public async Task<IActionResult> UpdateNote(Guid id, [FromBody] UpdateNotePutModel request)
         {
-            return Ok("Your note is UPDATED");
+            if (request.UpdIntStatus is null) request.UpdIntStatus = -1;
+            var updatedNote = new Note(id, request.UpdTitle, request.UpdDescription, (Status)request.UpdIntStatus);
+            var entity = await _notesService.UpdateNoteById(updatedNote);
+
+            if (entity != null)
+            {
+                return Ok(entity);
+            }
+            else
+            {
+                return new ContentResult
+                {
+                    StatusCode = 404,
+                    Content = $"Note with id = {id} is not found"
+                };
+            }
         }
 
         [HttpDelete("deleteNote/{id:guid}")]
